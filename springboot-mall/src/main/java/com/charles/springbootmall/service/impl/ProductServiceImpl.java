@@ -2,7 +2,7 @@ package com.charles.springbootmall.service.impl;
 
 import com.charles.springbootmall.dao.ProductDao;
 //import com.charles.springbootmall.dto.ProductQueryParams;
-//import com.charles.springbootmall.dto.ProductRequest;
+import com.charles.springbootmall.dto.ProductRequest;
 import com.charles.springbootmall.model.Product;
 import com.charles.springbootmall.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,16 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductDao productDao;
 
+    @Override
+    public Product getProductById(Integer productId) {
+        return productDao.getProductById(productId);
+    }
+
+    @Override
+    public Integer createProduct(ProductRequest productRequest) {
+        return productDao.createProduct(productRequest);
+    }
+
 //    @Override
 //    public Integer countProduct(ProductQueryParams productQueryParams) {
 //        return productDao.countProduct(productQueryParams);
@@ -24,16 +34,6 @@ public class ProductServiceImpl implements ProductService {
 //    @Override
 //    public List<Product> getProducts(ProductQueryParams productQueryParams) {
 //        return productDao.getProducts(productQueryParams);
-//    }
-
-    @Override
-    public Product getProductById(Integer productId) {
-        return productDao.getProductById(productId);
-    }
-
-//    @Override
-//    public Integer createProduct(ProductRequest productRequest) {
-//        return productDao.createProduct(productRequest);
 //    }
 //
 //    @Override

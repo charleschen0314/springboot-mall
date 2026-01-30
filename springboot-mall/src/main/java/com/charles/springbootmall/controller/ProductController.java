@@ -2,19 +2,20 @@ package com.charles.springbootmall.controller;
 
 //import com.charles.springbootmall.constant.ProductCategory;
 //import com.charles.springbootmall.dto.ProductQueryParams;
-//import com.charles.springbootmall.dto.ProductRequest;
+import com.charles.springbootmall.dto.ProductRequest;
 import com.charles.springbootmall.model.Product;
 import com.charles.springbootmall.service.ProductService;
 //import com.charles.springbootmall.util.Page;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-//import javax.validation.Valid;
-//import javax.validation.constraints.Max;
-//import javax.validation.constraints.Min;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import java.util.List;
 
 @Validated
@@ -23,6 +24,27 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @GetMapping("/products/{productId}")
+    public ResponseEntity<Product> getProduct(@PathVariable Integer productId) {
+        Product product = productService.getProductById(productId);
+
+        if (product != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(product);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @PostMapping("/products")
+    public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest) {
+        Integer productId = productService.createProduct(productRequest);
+
+        Product product = productService.getProductById(productId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(product);
+
+    }
 
 //    @GetMapping("/products")
 //    public ResponseEntity<Page<Product>> getProducts(
@@ -61,27 +83,7 @@ public class ProductController {
 //
 //        return ResponseEntity.status(HttpStatus.OK).body(page);
 //    }
-
-    @GetMapping("/products/{productId}")
-    public ResponseEntity<Product> getProduct(@PathVariable Integer productId) {
-        Product product = productService.getProductById(productId);
-
-        if (product != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(product);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
-
-//    @PostMapping("/products")
-//    public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest) {
-//        Integer productId = productService.createProduct(productRequest);
 //
-//        Product product = productService.getProductById(productId);
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body(product);
-//    }
-
 //    @PutMapping("/products/{productId}")
 //    public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
 //                                                 @RequestBody @Valid ProductRequest productRequest) {
