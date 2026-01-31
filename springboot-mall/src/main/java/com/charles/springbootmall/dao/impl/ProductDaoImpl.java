@@ -90,6 +90,16 @@ public class ProductDaoImpl implements ProductDao {
         namedParameterJdbcTemplate.update(sql, map);
     }
 
+    @Override
+    public void deleteProductById(Integer productId) {
+        String sql = "DELETE FROM product WHERE product_id = :productId ";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("productId", productId);
+
+        namedParameterJdbcTemplate.update(sql, map);
+    }
+
 //    @Override
 //    public Integer countProduct(ProductQueryParams productQueryParams) {
 //        String sql = "SELECT count(*) FROM product WHERE 1=1";
@@ -146,33 +156,7 @@ public class ProductDaoImpl implements ProductDao {
 //        }
 //    }
 //
-//    @Override
-//    public Integer createProduct(ProductRequest productRequest) {
-//        String sql = "INSERT INTO product(product_name, category, image_url, price, stock, " +
-//                "description, created_date, last_modified_date) " +
-//                "VALUES (:productName, :category, :imageUrl, :price, :stock, :description, " +
-//                ":createdDate, :lastModifiedDate)";
-//
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("productName", productRequest.getProductName());
-//        map.put("category", productRequest.getCategory().toString());
-//        map.put("imageUrl", productRequest.getImageUrl());
-//        map.put("price", productRequest.getPrice());
-//        map.put("stock", productRequest.getStock());
-//        map.put("description", productRequest.getDescription());
-//
-//        Date now = new Date();
-//        map.put("createdDate", now);
-//        map.put("lastModifiedDate", now);
-//
-//        KeyHolder keyHolder = new GeneratedKeyHolder();
-//
-//        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
-//
-//        int productId = keyHolder.getKey().intValue();
-//
-//        return productId;
-//    }
+
 //
 //
 //    @Override
@@ -188,15 +172,6 @@ public class ProductDaoImpl implements ProductDao {
 //        namedParameterJdbcTemplate.update(sql, map);
 //    }
 //
-//    @Override
-//    public void deleteProductById(Integer productId) {
-//        String sql = "DELETE FROM product WHERE product_id = :productId ";
-//
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("productId", productId);
-//
-//        namedParameterJdbcTemplate.update(sql, map);
-//    }
 //
 //    private String addFilteringSql(String sql, Map<String, Object> map, ProductQueryParams productQueryParams) {
 //        if (productQueryParams.getCategory() != null) {

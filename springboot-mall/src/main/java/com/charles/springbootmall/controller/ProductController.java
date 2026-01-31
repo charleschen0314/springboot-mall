@@ -64,6 +64,13 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
     }
 
+    @DeleteMapping("/products/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Integer productId) {
+        productService.deleteProductById(productId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 //    @GetMapping("/products")
 //    public ResponseEntity<Page<Product>> getProducts(
 //            // 查詢條件 Filtering
@@ -102,11 +109,6 @@ public class ProductController {
 //        return ResponseEntity.status(HttpStatus.OK).body(page);
 //    }
 //
-//    @DeleteMapping("/products/{productId}")
-//    public ResponseEntity<?> deleteProduct(@PathVariable Integer productId) {
-//        productService.deleteProductById(productId);
-//
-//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//    }
+
 
 }
