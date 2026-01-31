@@ -46,6 +46,24 @@ public class ProductController {
 
     }
 
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
+                                                 @RequestBody @Valid ProductRequest productRequest) {
+        // 檢查 product 是否存在
+        Product product = productService.getProductById(productId);
+
+        if (product == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        // 修改商品的數據
+        productService.updateProduct(productId, productRequest);
+
+        Product updatedProduct = productService.getProductById(productId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
+    }
+
 //    @GetMapping("/products")
 //    public ResponseEntity<Page<Product>> getProducts(
 //            // 查詢條件 Filtering
@@ -84,24 +102,6 @@ public class ProductController {
 //        return ResponseEntity.status(HttpStatus.OK).body(page);
 //    }
 //
-//    @PutMapping("/products/{productId}")
-//    public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
-//                                                 @RequestBody @Valid ProductRequest productRequest) {
-//        // 檢查 product 是否存在
-//        Product product = productService.getProductById(productId);
-//
-//        if (product == null) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-//        }
-//
-//        // 修改商品的數據
-//        productService.updateProduct(productId, productRequest);
-//
-//        Product updatedProduct = productService.getProductById(productId);
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
-//    }
-
 //    @DeleteMapping("/products/{productId}")
 //    public ResponseEntity<?> deleteProduct(@PathVariable Integer productId) {
 //        productService.deleteProductById(productId);

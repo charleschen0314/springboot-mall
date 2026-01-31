@@ -13,15 +13,13 @@ public interface ProductService {
 
     Integer createProduct(ProductRequest productRequest);
 
+    void updateProduct(Integer productId, ProductRequest productRequest);
+
 //    Integer countProduct(ProductQueryParams productQueryParams);
 //
 //    List<Product> getProducts(ProductQueryParams productQueryParams);
 //
 //    Product getProductById(Integer productId);
-//
-
-//
-//    void updateProduct(Integer productId, ProductRequest productRequest);
 //
 //    void deleteProductById(Integer productId);
 }
