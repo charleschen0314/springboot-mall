@@ -1,7 +1,7 @@
 package com.charles.springbootmall.dao.impl;
 
 import com.charles.springbootmall.dao.ProductDao;
-//import com.charles.springbootmall.dto.ProductQueryParams;
+import com.charles.springbootmall.dto.ProductQueryParams;
 import com.charles.springbootmall.dto.ProductRequest;
 import com.charles.springbootmall.model.Product;
 import com.charles.springbootmall.rowmapper.ProductRowMapper;
@@ -32,7 +32,7 @@ public class ProductDaoImpl implements ProductDao {
         Map<String, Object> map = new HashMap<>();
         map.put("productId", productId);
 
-        List<Product> productList =  namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
+        List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
 
         if (productList.size() > 0) {
             return productList.get(0);
@@ -100,6 +100,44 @@ public class ProductDaoImpl implements ProductDao {
         namedParameterJdbcTemplate.update(sql, map);
     }
 
+    @Override
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
+        String sql = "SELECT product_id, product_name, category, image_url, price, stock, description, " +
+                "created_date, last_modified_date " +
+                "FROM product WHERE 1=1";
+
+        Map<String, Object> map = new HashMap<>();
+
+        // 查詢條件
+        sql = addFilteringSql(sql, map, productQueryParams);
+
+        // 排序
+        sql = sql + " ORDER BY " + productQueryParams.getOrderBy() + " " + productQueryParams.getSort();
+
+        // 分頁
+        sql = sql + " LIMIT :limit OFFSET :offset";
+        map.put("limit", productQueryParams.getLimit());
+        map.put("offset", productQueryParams.getOffset());
+
+        List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
+
+        return productList;
+    }
+
+    private String addFilteringSql(String sql, Map<String, Object> map, ProductQueryParams productQueryParams) {
+        if (productQueryParams.getCategory() != null) {
+            sql = sql + " AND category = :category";
+            map.put("category", productQueryParams.getCategory().name());
+        }
+
+        if (productQueryParams.getSearch() != null) {
+            sql = sql + " AND product_name LIKE :search";
+            map.put("search", "%" + productQueryParams.getSearch() + "%");
+        }
+
+        return sql;
+    }
+
 //    @Override
 //    public Integer countProduct(ProductQueryParams productQueryParams) {
 //        String sql = "SELECT count(*) FROM product WHERE 1=1";
@@ -115,51 +153,6 @@ public class ProductDaoImpl implements ProductDao {
 //    }
 //
 //    @Override
-//    public List<Product> getProducts(ProductQueryParams productQueryParams) {
-//        String sql = "SELECT product_id, product_name, category, image_url, price, stock, description, " +
-//                "created_date, last_modified_date " +
-//                "FROM product WHERE 1=1";
-//
-//        Map<String, Object> map = new HashMap<>();
-//
-//        // 查詢條件
-//        sql = addFilteringSql(sql, map, productQueryParams);
-//
-//        // 排序
-//        sql = sql + " ORDER BY " + productQueryParams.getOrderBy() + " " + productQueryParams.getSort();
-//
-//        // 分頁
-//        sql = sql + " LIMIT :limit OFFSET :offset";
-//        map.put("limit", productQueryParams.getLimit());
-//        map.put("offset", productQueryParams.getOffset());
-//
-//        List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
-//
-//        return productList;
-//    }
-//
-//    @Override
-//    public Product getProductById(Integer productId) {
-//        String sql = "SELECT product_id, product_name, category, image_url, price, stock, description, " +
-//                "created_date, last_modified_date " +
-//                "FROM product WHERE product_id = :productId";
-//
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("productId", productId);
-//
-//        List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
-//
-//        if (productList.size() > 0) {
-//            return productList.get(0);
-//        } else {
-//            return null;
-//        }
-//    }
-//
-
-//
-//
-//    @Override
 //    public void updateStock(Integer productId, Integer stock) {
 //        String sql = "UPDATE product SET stock = :stock, last_modified_date = :lastModifiedDate" +
 //                " WHERE product_id = :productId ";
@@ -173,17 +166,5 @@ public class ProductDaoImpl implements ProductDao {
 //    }
 //
 //
-//    private String addFilteringSql(String sql, Map<String, Object> map, ProductQueryParams productQueryParams) {
-//        if (productQueryParams.getCategory() != null) {
-//            sql = sql + " AND category = :category";
-//            map.put("category", productQueryParams.getCategory().name());
-//        }
-//
-//        if (productQueryParams.getSearch() != null) {
-//            sql = sql + " AND product_name LIKE :search";
-//            map.put("search", "%" + productQueryParams.getSearch() + "%");
-//        }
-//
-//        return sql;
-//    }
+
 }

@@ -1,8 +1,7 @@
 package com.charles.springbootmall.service;
 
-//import com.charles.springbootmall.dto.ProductQueryParams;
+import com.charles.springbootmall.dto.ProductQueryParams;
 import com.charles.springbootmall.dto.ProductRequest;
-
 import com.charles.springbootmall.model.Product;
 
 import java.util.List;
@@ -17,7 +16,9 @@ public interface ProductService {
 
     void deleteProductById(Integer productId);
 
+    List<Product> getProducts(ProductQueryParams productQueryParams);
+
 //    Integer countProduct(ProductQueryParams productQueryParams);
 //
-//    List<Product> getProducts(ProductQueryParams productQueryParams);
+
 }

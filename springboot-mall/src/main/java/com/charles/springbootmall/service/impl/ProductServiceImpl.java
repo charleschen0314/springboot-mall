@@ -1,7 +1,7 @@
 package com.charles.springbootmall.service.impl;
 
 import com.charles.springbootmall.dao.ProductDao;
-//import com.charles.springbootmall.dto.ProductQueryParams;
+import com.charles.springbootmall.dto.ProductQueryParams;
 import com.charles.springbootmall.dto.ProductRequest;
 import com.charles.springbootmall.model.Product;
 import com.charles.springbootmall.service.ProductService;
@@ -36,14 +36,15 @@ public class ProductServiceImpl implements ProductService {
         productDao.deleteProductById(productId);
     }
 
+    @Override
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
+        return productDao.getProducts(productQueryParams);
+    }
+
 //    @Override
 //    public Integer countProduct(ProductQueryParams productQueryParams) {
 //        return productDao.countProduct(productQueryParams);
 //    }
 //
-//    @Override
-//    public List<Product> getProducts(ProductQueryParams productQueryParams) {
-//        return productDao.getProducts(productQueryParams);
-//    }
 
 }
